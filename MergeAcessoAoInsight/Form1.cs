@@ -30,8 +30,14 @@ namespace MergeAcessoAoInsight
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                listaDeArquivos = GetArquivos();
-                listaDeArquivos = OrdenarArquivos(listaDeArquivos);
+
+                listaDeArquivos = GetPhpsEspecificadosArqTxt();
+                if (listaDeArquivos.Count == 0)
+                {
+                    listaDeArquivos = GetArquivos();
+                    listaDeArquivos = OrdenarArquivos(listaDeArquivos);
+                }
+
                 MergeArquivos(listaDeArquivos);
                 Util.LimparArquivo(arquivoDestino);
             }
@@ -45,6 +51,15 @@ namespace MergeAcessoAoInsight
             }
 
             MessageBox.Show("Processamento concluído");
+        }
+
+        private List<string> GetPhpsEspecificadosArqTxt()
+        {
+            var arquivos = File.ReadAllLines(path + "phps.txt").ToList();
+            var arquivosAux = new List<string>();
+            foreach(var arq in arquivos)
+                arquivosAux.Add(@"E:\AcessoAoInsight\sutta\" + arq);
+            return arquivosAux;
         }
 
         private List<string> OrdenarArquivos(List<string> listaDeArquivos)
@@ -155,12 +170,7 @@ namespace MergeAcessoAoInsight
             string[] fileEntries = Directory.GetFiles(targetDirectory, padrao);
             foreach (string fileName in fileEntries)
                 listaDeArquivos.Add(fileName);
-
-            // Recurse into subdirectories of this directory.
-            //string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
-            //foreach (string subdirectory in subdirectoryEntries)
-            //    ProcessDirectory(subdirectory);
-
+            
             return listaDeArquivos;
         }
 
