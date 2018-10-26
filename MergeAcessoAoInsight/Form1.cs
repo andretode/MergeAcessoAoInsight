@@ -81,7 +81,6 @@ namespace MergeAcessoAoInsight
 
             conteudoArqFinal = AjustarTagHr(conteudoArqFinal);
             Util.TrocarLinkImportantePorTexto(ref conteudoArqFinal, path);
-            conteudoArqFinal = Util.EncontraLinksRemover(conteudoArqFinal);
             File.WriteAllText(arquivoHR, conteudoArqFinal, Util.encoding);
             Cursor.Current = Cursors.Default;
             MessageBox.Show("Processamento concluído");
@@ -125,6 +124,7 @@ namespace MergeAcessoAoInsight
             {
                 var conteudoMeio = Util.ExtrairSuttaArquivo(arq);
                 Util.RemoverAvisoDistribuicao(ref conteudoMeio);
+                conteudoMeio = Util.EncontraLinksRemover(conteudoMeio);
                 File.AppendAllText(arquivoDestino, conteudoMeio, Util.encoding);
             }
 
